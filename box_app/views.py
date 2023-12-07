@@ -7,8 +7,13 @@ from box_app.forms import UserCreateForm, LoginForm, SearchForm, AddStudentForm
 from box_app.models import BoxingClass, BoxingClassMembership, Student, Trainer
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 # Create your views here.
+
+"""
+MainView - Is a view that display list of boxing classes, LoginRequiredMixin allows only authenticated users to view 
+this site, by redirecting them to login view using login_url, method get retrieve object from model BoxingClass, and 
+render it with Template base.html
+"""
 
 
 class MainView(LoginRequiredMixin, View):
@@ -17,6 +22,13 @@ class MainView(LoginRequiredMixin, View):
     def get(self, request):
         boxingclasses = BoxingClass.objects.all().order_by('pk')
         return render(request, "base.html", {'boxingclassess': boxingclasses})
+
+
+"""
+LoginView - Is a view for user login. Its using FormView which is generic form to display a view. LoginView is using 
+form_class = LoginForm for user to login, template_name = 'form.html' is rendering login form, success_url = '/' is 
+redirecting user to MainView using form_valid(self,form) for handling valid form submission
+"""
 
 
 class LoginView(FormView):
@@ -85,6 +97,7 @@ class SearchView(View):
             return render(request, "search.html", ctx)
         else:
             return render(request, "search.html", {"form": form})
+
 
 class AddStudent(View):
     def get(self, request):
