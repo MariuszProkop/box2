@@ -27,7 +27,7 @@ class MainView(LoginRequiredMixin, View):
 """
 LoginView - Is a view for user login. Its using FormView which is generic form to display a view. LoginView is using 
 form_class = LoginForm for user to login, template_name = 'form.html' is rendering login form, success_url = '/' is 
-redirecting user to MainView using form_valid(self,form) for handling valid form submission
+redirecting user to MainView using form_valid(self,form) for handling valid form submission.
 """
 
 
@@ -40,6 +40,12 @@ class LoginView(FormView):
         user = form.user
         login(self.request, user)
         return super().form_valid(form)
+
+
+"""
+UserLogoutView - is a view for user logout. Its using LogoutView which is Django class-based view for user logout, this
+view is using template_name = 'form.html' to render template upon successful user logout.
+"""
 
 
 class UserLogoutView(LogoutView):
