@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detale Klasy Bokserskiej</title>
+</head>
+<body>
+    <h1>{{ boxing_class.class_name }}</h1>
+    <p>Poziom: {{ boxing_class.get_level_display }}</p>
+    <p>Nauczyciel: {{ boxing_class.teacher }}</p>
+    <p>Studenci:</p>
+    <ul>
+        {% for student in boxing_class.students.all %}
+            <li>{{ student.name }} {{ student.surname }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

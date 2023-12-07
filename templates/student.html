@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Detale Ucznia
+{%  endblock %}
+
+{% block content %}
+    <h1>{{ student.id }}</h1>
+    <p>imie: {{ student.name }}</p>
+    <p>nazwisko: {{ student.surname }}</p>
+    <p>wiek: {{ student.age }}</p>
+    <p>mail:{{ student.email }}</p>
+
+    {% if student.teachers.all %}
+        <h2>Zajęcia indywidualne u :</h2>
+        {% for trainer in student.teachers.all %}
+            <p>{{ trainer.name }} {{ trainer.surname }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Brak przypisanego trenera.</p>
+    {% endif %}
+
+{% endblock %}
+
+
+

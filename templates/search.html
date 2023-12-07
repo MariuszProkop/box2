@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Wyszukiwanie trenera
+{% endblock %}
+
+{% block content %}
+<h2>Wyszukiwanie trenera</h2>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Szukaj</button>
+    </form>
+
+{% if trainer%}
+        <h2>Wynik wyszukiwania:</h2>
+        <ul>
+        {% for tr in trainer%}
+            <li><a href="{% url "trainer_detail" tr.pk %}">{{ tr }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

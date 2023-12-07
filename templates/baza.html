@@ -1,0 +1,8 @@
+<footer>
+    {% if user.is_authenticated %}
+        <p>Aktualnie zalogowany użytkownik: {{ user.username }}</p>
+        <a href="/logout">Wyloguj</a>
+    {% else %}
+        <p><a href="/login">Zaloguj się</a></p>
+    {% endif %}
+</footer>
