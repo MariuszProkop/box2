@@ -17,7 +17,7 @@ render it with Template base.html
 
 
 class MainView(LoginRequiredMixin, View):
-    login_url = '/login/'
+    login_url = '/base/'
 
     def get(self, request):
         boxingclasses = BoxingClass.objects.all().order_by('pk')
@@ -52,10 +52,23 @@ class UserLogoutView(LogoutView):
     template_name = 'form.html'
 
 
+"""
+UserCreateView - is a view for registration of new user. Its using CreateView which is Django class-based view for user
+registration, this view is using template_name = 'form' to render upon successful user registration, success_url = '/' 
+is redirecting user to MainView after successful registration.
+"""
+
+
 class UserCreateView(CreateView):
     form_class = UserCreateForm
     template_name = 'form.html'
     success_url = '/'
+
+
+"""
+BaseView - is a view that allows user to login, its also shows which user is currently logged, and its giving option for 
+user to logout.
+"""
 
 
 class BaseView(View):
@@ -63,23 +76,42 @@ class BaseView(View):
         return render(request, 'baza.html')
 
 
+"""
+BoxingClassDetailView - is a view that's show information's about specific instance of the 'BoxingClass' model, its 
+showing details about level of boxing class, who's teaching it, and who is student in this class
+"""
+
+
 class BoxingClassDetailView(DetailView):
     model = BoxingClass
-    template_name = 'boxing_class_detail2.html'
+    template_name = 'boxing_class_detail.html'
     context_object_name = 'boxing_class'
+
+
+"""
+TrainerView - is view that show detail information about trainer, his name, surname, age, mail, what student is asigned 
+to him and in what class he is teaching. Method get is giving access to Trainer object and trainer_id,  
+student = trainer.student is giving access to details about student that is assigned to him, 
+taught = trainer.boxingclass_set.all() is giving access to BoxingClass from build in relation that Django automatically 
+created
+"""
 
 
 class TrainerView(View):
     def get(self, request, trainer_id):
         trainer = get_object_or_404(Trainer, pk=trainer_id)
         student = trainer.student
-        taugh = trainer.boxingclass_set.all()
+        taught = trainer.boxingclass_set.all()
         context = {"trainer": trainer,
                    "student": student,
-                   "taugh": taugh}
+                   "taught": taught}
         return render(request, "Trainer.html", context)
 
 
+"""
+StudentView - is a view that detail information about student, his name, surname, age, mail and to which trainer is 
+assigned for individual training
+"""
 class StudentView(View):
     def get(self, request, student_id):
         student = get_object_or_404(Student, pk=student_id)

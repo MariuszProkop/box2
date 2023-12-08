@@ -1,17 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detale Klasy Bokserskiej</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+    Detale Klasy Bokserskiej
+{%  endblock %}
+
+{% block content %}
     <h1>{{ boxing_class.class_name }}</h1>
     <p>Poziom: {{ boxing_class.get_level_display }}</p>
-    <p>Nauczyciel: {{ boxing_class.teacher }}</p>
+      <p>Nauczyciel:
+        <a href="{% url 'trainer_detail' trainer_id=boxing_class.teacher.id %}">
+            {{ boxing_class.teacher.name }} {{ boxing_class.teacher.surname }}
+        </a>
+    </p>
     <p>Studenci:</p>
     <ul>
         {% for student in boxing_class.students.all %}
             <li>{{ student.name }} {{ student.surname }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
+
