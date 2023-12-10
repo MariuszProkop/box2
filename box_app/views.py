@@ -112,6 +112,8 @@ class TrainerView(View):
 StudentView - is a view that detail information about student, his name, surname, age, mail and to which trainer is 
 assigned for individual training
 """
+
+
 class StudentView(View):
     def get(self, request, student_id):
         student = get_object_or_404(Student, pk=student_id)
@@ -119,6 +121,12 @@ class StudentView(View):
         context = {"student": student,
                    "trainer": trainer}
         return render(request, "student.html", context)
+
+
+"""SearchView - is a view that allows to find trainer by his surname. Method get is using SearchForm that is checking 
+from with trainer object, if it contains part of letters in his surname with __icontains which is is a lookup type 
+used in queries to perform case-insensitive containment tests, that is returning information is trainer was found and 
+are presented on html site"""
 
 
 class SearchView(View):
