@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from box_app.views import (UserCreateView, MainView, LoginView, UserLogoutView, BaseView, BoxingClassDetailView,
-                           TrainerView, StudentView, SearchView, AddStudent)
+                           TrainerView, StudentView, SearchView, AddStudent, AddTrainerView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +31,8 @@ urlpatterns = [
     path('student_detail/<int:student_id>/', StudentView.as_view(), name='student_detail'),
     path('search/', SearchView.as_view(), name='search'),
     path('add_student/', AddStudent.as_view(), name="add_student"),
+    path('add_trainer/', AddTrainerView.as_view(), name="add_trainer"),
+
+
 
 ]

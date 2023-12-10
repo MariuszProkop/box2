@@ -1,9 +1,12 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import CreateView, FormView, DetailView
 from django.contrib.auth import login, logout
-from box_app.forms import UserCreateForm, LoginForm, SearchForm, AddStudentForm
+from box_app.forms import UserCreateForm, LoginForm, SearchForm, AddStudentForm, TrainerForm
 from box_app.models import BoxingClass, BoxingClassMembership, Student, Trainer
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -158,12 +161,30 @@ class AddStudent(View):
                 surname=form.cleaned_data['surname'],
                 age=form.cleaned_data['age'],
                 email=form.cleaned_data['email'],
+                user=request.user
             )
-
-            class_name = form.cleaned_data['class_name']
-            boxing_class = BoxingClass.objects.get(class_name=class_name)
-            boxing_class.students.add(new_student)
 
             return redirect("student_detail", new_student.pk)
         else:
             return render(request, "add_student.html", {"form": form})
+
+
+class AddTrainerView(View):
+    def get(self, request):
+        form = TrainerForm()
+        return render(request, "add_trainer.html", {"form": form})
+
+    def post(self, request):
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            new_trainer = Trainer.objects.create(
+                name=form.cleaned_data['name'],
+                surname=form.cleaned_data['surname'],
+                age=form.cleaned_data['age'],
+                email=form.cleaned_data['email'],
+                user=request.user,
+            )
+
+            return redirect("trainer_detail", new_trainer.pk)
+        else:
+            return render(request, "add_trainer.html", {"form": form})

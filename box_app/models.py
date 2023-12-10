@@ -7,7 +7,7 @@ class Student(models.Model):
     surname = models.CharField(max_length=50)
     age = models.PositiveIntegerField()
     email = models.EmailField(max_length=50, blank=True, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     teachers = models.ManyToManyField('Trainer', related_name='students')
 
     def __str__(self):

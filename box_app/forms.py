@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django import forms
-from box_app.models import BoxingClass
+from box_app.models import BoxingClass, Student, Trainer
 
 
 class LoginForm(forms.Form):
@@ -52,4 +52,11 @@ class AddStudentForm(forms.Form):
     class_name = forms.ModelChoiceField(queryset=BoxingClass.objects.all(), label="Klasa")
     age = forms.CharField(max_length=64, label="Wiek")
     email = forms.CharField(max_length=64, label="Email")
+
+class TrainerForm(forms.ModelForm):
+    class Meta:
+        model = Trainer
+        fields = ['name', 'surname', 'age', 'email']
+
+
 
