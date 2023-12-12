@@ -44,3 +44,18 @@ class Trainer(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname}'
+
+
+# class Profile(models.Model):
+#     # name = models.CharField(max_length=50)
+#     # surname = models.CharField(max_length=50)
+#     age = models.PositiveIntegerField()
+#     type = models.ForeignKey(UserType, on_delete=models.CASCADE)
+#     # email = models.EmailField(max_length=50, blank=True, null=True)
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+#     teachers = models.ManyToManyField(User, related_name='students')
+#     students = models.ManyToManyField(User, related_name='teachers')
+#     def __str__(self):
+#         return f'{self.name}  {self.surname}'
+
+

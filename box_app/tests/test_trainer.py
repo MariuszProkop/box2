@@ -7,14 +7,11 @@ def test_trainer(client, trainer):
     response = client.get(f'/trainer_detail/{trainer.id}/')
     assert response.status_code == 200
     context = response.context
-    assert context['name'] == trainer.name
-    assert context['surname'] == trainer.surname
-    assert context['age'] == trainer.age
-    assert context['email'] == trainer.email
-
-
-
-
+    print(context)
+    assert context['trainer'].name == trainer.name
+    assert context['trainer'].surname == trainer.surname
+    assert context['trainer'].age == int(trainer.age)
+    assert context['trainer'].email == trainer.email
 
 
 
