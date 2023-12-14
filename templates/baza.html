@@ -4,5 +4,6 @@
         <a href="{% url 'logout' %}?next={% url 'index' %}">Wyloguj</a>
     {% else %}
         <p><a href="/login">Zaloguj się</a></p>
+        <p><a href="{% url 'add_user' %}">Zarejestruj się</a></p>
     {% endif %}
 </footer>
