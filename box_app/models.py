@@ -1,17 +1,10 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Student(models.Model):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-    age = models.PositiveIntegerField()
-    email = models.EmailField(max_length=50, blank=True, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    teachers = models.ManyToManyField('Trainer', related_name='students')
-
-    def __str__(self):
-        return f'{self.name}  {self.surname}'
+class User(AbstractUser):
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
 
 
 class BoxingClass(models.Model):
@@ -22,40 +15,30 @@ class BoxingClass(models.Model):
         ('3', 'Zaawansowany'),
     ]
     level = models.CharField(max_length=1, choices=level_choices)
-    teacher = models.ForeignKey('Trainer', on_delete=models.CASCADE, null=True, blank=True)
-    students = models.ManyToManyField('Student', through='BoxingClassMembership')
+    teacher = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True,
+                                limit_choices_to={'is_teacher': True}, related_name='classes_as_teacher')
+    students = models.ManyToManyField('User', through='BoxingClassMembership', limit_choices_to={'is_student': True}, related_name='classes_as_student')
 
     def __str__(self):
         return f'{self.class_name}'
 
 
 class BoxingClassMembership(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='class_memberships')
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='class_memberships',
+                                limit_choices_to={'is_student': True})
     boxing_class = models.ForeignKey(BoxingClass, on_delete=models.CASCADE, related_name='class_memberships')
 
 
-class Trainer(models.Model):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
+class Profile(models.Model):
     age = models.PositiveIntegerField()
-    email = models.EmailField(max_length=50, blank=True, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    student = models.OneToOneField(Student, on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return f'{self.name} {self.surname}'
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    teachers = models.ManyToManyField(User, related_name='students')
+    students = models.ManyToManyField(User, related_name='teachers')
+    #type = models.ForeignKey(User, on_delete=models.CASCADE, primary_key=True)
 
 
-# class Profile(models.Model):
-#     # name = models.CharField(max_length=50)
-#     # surname = models.CharField(max_length=50)
-#     age = models.PositiveIntegerField()
-#     type = models.ForeignKey(UserType, on_delete=models.CASCADE)
-#     # email = models.EmailField(max_length=50, blank=True, null=True)
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-#     teachers = models.ManyToManyField(User, related_name='students')
-#     students = models.ManyToManyField(User, related_name='teachers')
-#     def __str__(self):
-#         return f'{self.name}  {self.surname}'
 
-
+CHOICES = (
+    (1, "Student"),
+    (2, "Trainer"),
+)

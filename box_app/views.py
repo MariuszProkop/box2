@@ -6,8 +6,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import CreateView, FormView, DetailView
 from django.contrib.auth import login, logout
-from box_app.forms import UserCreateForm, LoginForm, SearchForm, AddStudentForm, TrainerForm
-from box_app.models import BoxingClass, BoxingClassMembership, Student, Trainer
+from box_app.forms import UserCreateForm, LoginForm, SearchForm, AddStudentForm, TrainerForm #TrainerCreateForm,
+                           #StudentCreateForm)
+from box_app.models import BoxingClass, BoxingClassMembership, Profile
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
@@ -102,7 +103,7 @@ created
 
 class TrainerView(View):
     def get(self, request, trainer_id):
-        trainer = get_object_or_404(Trainer, pk=trainer_id)
+        trainer = get_object_or_404(Profile, pk=trainer_id)
         student = trainer.student
         taught = trainer.boxingclass_set.all()
         context = {"trainer": trainer,
@@ -119,7 +120,7 @@ assigned for individual training
 
 class StudentView(View):
     def get(self, request, student_id):
-        student = get_object_or_404(Student, pk=student_id)
+        student = get_object_or_404(Profile, pk=student_id)
         trainer = student.teachers.all()
         context = {"student": student,
                    "trainer": trainer}
@@ -140,7 +141,7 @@ class SearchView(View):
     def post(self, request):
         form = SearchForm(request.POST)
         if form.is_valid():
-            trainer = Trainer.objects.filter(surname__icontains=form.cleaned_data['last_name'])
+            trainer = Profile.objects.filter(surname__icontains=form.cleaned_data['last_name'])
             ctx = {"form": form,
                    "trainer": trainer}
             return render(request, "search.html", ctx)
@@ -156,7 +157,7 @@ class AddStudent(View):
     def post(self, request):
         form = AddStudentForm(request.POST)
         if form.is_valid():
-            new_student = Student.objects.create(
+            new_student = Profile.objects.create(
                 name=form.cleaned_data['name'],
                 surname=form.cleaned_data['surname'],
                 age=form.cleaned_data['age'],
@@ -177,7 +178,7 @@ class AddTrainerView(View):
     def post(self, request):
         form = TrainerForm(request.POST)
         if form.is_valid():
-            new_trainer = Trainer.objects.create(
+            new_trainer = Profile.objects.create(
                 name=form.cleaned_data['name'],
                 surname=form.cleaned_data['surname'],
                 age=form.cleaned_data['age'],
@@ -188,3 +189,34 @@ class AddTrainerView(View):
             return redirect("trainer_detail", new_trainer.pk)
         else:
             return render(request, "add_trainer.html", {"form": form})
+
+
+
+class StudentSignUpView(CreateView):
+    model = User
+    form_class = UserCreateForm
+    template_name = 'registration/signup_form.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'student'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('students:quiz_list')
+
+
+class TeacherSignUpView(CreateView):
+    model = User
+    form_class = UserCreateForm
+    template_name = 'registration/signup_form.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'teacher'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('teachers:quiz_change_list')

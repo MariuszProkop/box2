@@ -1,5 +1,5 @@
 import pytest
-from box_app.models import Trainer
+from box_app.models import Profile
 
 
 @pytest.mark.django_db

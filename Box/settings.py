@@ -76,10 +76,12 @@ WSGI_APPLICATION = 'Box.wsgi.application'
 DATABASES = {
     'default': {
         'HOST': '127.0.0.1',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'box_app',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'box_app.sqlite3'
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'box_app',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'coderslab',
     }
 }
 
@@ -123,3 +125,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+AUTH_USER_MODEL = 'box_app.User'

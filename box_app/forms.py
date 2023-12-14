@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django import forms
-from box_app.models import BoxingClass, Student, Trainer
+from box_app.models import BoxingClass, Profile
+from django.contrib.auth.forms import UserCreationForm
 
 
 class LoginForm(forms.Form):
@@ -53,10 +54,32 @@ class AddStudentForm(forms.Form):
     age = forms.CharField(max_length=64, label="Wiek")
     email = forms.CharField(max_length=64, label="Email")
 
+
 class TrainerForm(forms.ModelForm):
     class Meta:
-        model = Trainer
-        fields = ['name', 'surname', 'age', 'email']
+        model = User
+        # fields = ['name', 'surname', 'email']
+        fields = "__all__"
 
 
-
+# class TrainerCreateForm(forms.ModelForm):
+#     class Meta(UserCreateForm):
+#         model = User
+#
+#         def save(self, commit=True):
+#             user = super().save(commit=False)
+#             user.is_teacher = True
+#             if commit:
+#                 user.save()
+#             return user
+#
+# class StudentCreateForm(forms.ModelForm):
+#     class Meta(UserCreateForm.Meta):
+#         model = User
+#
+#     def save(self, commit=True):
+#         user = super().save(commit=False)
+#         user.is_student = True
+#         if commit:
+#             user.save()
+#         return user
