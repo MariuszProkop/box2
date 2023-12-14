@@ -51,7 +51,7 @@ view is using template_name = 'form.html' to render template upon successful use
 """
 
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(LoginRequiredMixin,LogoutView):
     template_name = 'form.html'
 
 
@@ -85,7 +85,7 @@ showing details about level of boxing class, who's teaching it, and who is stude
 """
 
 
-class BoxingClassDetailView(DetailView):
+class BoxingClassDetailView(LoginRequiredMixin,DetailView):
     model = BoxingClass
     template_name = 'boxing_class_detail.html'
     context_object_name = 'boxing_class'
@@ -100,7 +100,7 @@ created
 """
 
 
-class TrainerView(View):
+class TrainerView(LoginRequiredMixin,View):
     def get(self, request, trainer_id):
         trainer = get_object_or_404(Trainer, pk=trainer_id)
         student = trainer.student
@@ -117,7 +117,7 @@ assigned for individual training
 """
 
 
-class StudentView(View):
+class StudentView(LoginRequiredMixin,View):
     def get(self, request, student_id):
         student = get_object_or_404(Student, pk=student_id)
         trainer = student.teachers.all()
@@ -148,7 +148,7 @@ class SearchView(View):
             return render(request, "search.html", {"form": form})
 
 
-class AddStudent(View):
+class AddStudent(LoginRequiredMixin,View):
     def get(self, request):
         form = AddStudentForm()
         return render(request, "add_student.html", {"form": form})
