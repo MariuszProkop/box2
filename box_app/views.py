@@ -51,7 +51,7 @@ view is using template_name = 'form.html' to render template upon successful use
 """
 
 
-class UserLogoutView(LoginRequiredMixin,LogoutView):
+class UserLogoutView(LoginRequiredMixin, LogoutView):
     template_name = 'form.html'
 
 
@@ -85,7 +85,7 @@ showing details about level of boxing class, who's teaching it, and who is stude
 """
 
 
-class BoxingClassDetailView(LoginRequiredMixin,DetailView):
+class BoxingClassDetailView(LoginRequiredMixin, DetailView):
     model = BoxingClass
     template_name = 'boxing_class_detail.html'
     context_object_name = 'boxing_class'
@@ -100,7 +100,7 @@ created
 """
 
 
-class TrainerView(LoginRequiredMixin,View):
+class TrainerView(View):
     def get(self, request, trainer_id):
         trainer = get_object_or_404(Trainer, pk=trainer_id)
         student = trainer.student
@@ -117,7 +117,7 @@ assigned for individual training
 """
 
 
-class StudentView(LoginRequiredMixin,View):
+class StudentView(LoginRequiredMixin, View):
     def get(self, request, student_id):
         student = get_object_or_404(Student, pk=student_id)
         trainer = student.teachers.all()
@@ -148,7 +148,11 @@ class SearchView(View):
             return render(request, "search.html", {"form": form})
 
 
-class AddStudent(LoginRequiredMixin,View):
+"""AddStudentView - is a view that allows to sign up a student for a particular boxing class"""
+
+
+class AddStudentView(LoginRequiredMixin, View):
+
     def get(self, request):
         form = AddStudentForm()
         return render(request, "add_student.html", {"form": form})
@@ -164,9 +168,14 @@ class AddStudent(LoginRequiredMixin,View):
                 user=request.user
             )
 
-            return redirect("student_detail", new_student.pk)
+            return redirect("add_student_success")
         else:
             return render(request, "add_student.html", {"form": form})
+
+
+class AddStudentSuccessView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "add_student_success2.html")
 
 
 class AddTrainerView(View):

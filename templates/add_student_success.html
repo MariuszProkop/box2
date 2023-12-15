@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Detale Ucznia
-{%  endblock %}
+Zgłoszenie nowego ucznia
+{% endblock %}
 
 {% block content %}
+<h3>Twoje przyjęcie zostało zgłoszone, możesz wrócić do <a href="{% url 'index' %}">strony głównej</a>.</h3>
     
-    <p>imie: {{ student.name }}</p>
+     <p>imie: {{ student.name }}</p>
     <p>nazwisko: {{ student.surname }}</p>
     <p>wiek: {{ student.age }}</p>
     <p>mail:{{ student.email }}</p>
@@ -19,8 +20,4 @@
     {% else %}
         <p>Brak przypisanego trenera.</p>
     {% endif %}
-
 {% endblock %}
-
-
-

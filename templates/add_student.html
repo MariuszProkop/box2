@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}
-Nowy uczeń
+Zapis nowego ucznia
 {% endblock %}
 
 {% block content %}
 <h2>Przyjęcie nowego ucznia</h2>
     <form action="" method="post">
-            {% csrf_token %}
+        {% csrf_token %}
         <table>
-    {{ form.as_table }}
-            </table>
+            {{ form.as_table }}
+        </table>
         <button type="submit">Dodaj ucznia</button>
     </form>
 {% endblock %}
