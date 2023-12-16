@@ -81,7 +81,7 @@ class BaseView(View):
 
 """
 BoxingClassDetailView - is a view that's show information's about specific instance of the 'BoxingClass' model, its 
-showing details about level of boxing class, who's teaching it, and who is student in this class
+showing details about level of boxing class, who's teaching it, and who is student in this class.
 """
 
 
@@ -96,7 +96,7 @@ TrainerView - is view that show detail information about trainer, his name, surn
 to him and in what class he is teaching. Method get is giving access to Trainer object and trainer_id,  
 student = trainer.student is giving access to details about student that is assigned to him, 
 taught = trainer.boxingclass_set.all() is giving access to BoxingClass from build in relation that Django automatically 
-created
+created.
 """
 
 
@@ -113,7 +113,7 @@ class TrainerView(View):
 
 """
 StudentView - is a view that detail information about student, his name, surname, age, mail and to which trainer is 
-assigned for individual training
+assigned for individual training.
 """
 
 
@@ -126,10 +126,12 @@ class StudentView(LoginRequiredMixin, View):
         return render(request, "student.html", context)
 
 
-"""SearchView - is a view that allows to find trainer by his surname. Method get is using SearchForm that is checking 
+"""
+SearchView - is a view that allows to find trainer by his surname. Method get is using SearchForm that is checking 
 from with trainer object, if it contains part of letters in his surname with __icontains which is is a lookup type 
 used in queries to perform case-insensitive containment tests, that is returning information is trainer was found and 
-are presented on html site"""
+are presented on html site.
+"""
 
 
 class SearchView(View):
@@ -148,7 +150,11 @@ class SearchView(View):
             return render(request, "search.html", {"form": form})
 
 
-"""AddStudentView - is a view that allows to sign up a student for a particular boxing class"""
+"""
+AddStudentView - is a view that allows to sign up a new student for a particular boxing class. Requires user 
+authentication. Its rendering 'add_student.html' with empty form. Post submits form with new student and redirects on 
+success to /add_student_success
+"""
 
 
 class AddStudentView(LoginRequiredMixin, View):
@@ -173,8 +179,10 @@ class AddStudentView(LoginRequiredMixin, View):
             return render(request, "add_student.html", {"form": form})
 
 
-"""AddBoxingView - is a view that show page after student successful signed up to a boxing class, it also have button to
- return to mainpage """
+""" 
+AddBoxingView - is a view that show page after student successful signed up to a boxing class, it also have button to
+return to mainpage. 
+ """
 
 
 class AddStudentSuccessView(LoginRequiredMixin, View):
@@ -182,6 +190,10 @@ class AddStudentSuccessView(LoginRequiredMixin, View):
         return render(request, "add_student_success2.html")
 
 
+"""
+AddBoxingView - is a view that will allow register new trainer for boxing classes, this view will be implemented in 
+future versions of app. 
+"""
 class AddTrainerView(View):
     def get(self, request):
         form = TrainerForm()
