@@ -173,6 +173,10 @@ class AddStudentView(LoginRequiredMixin, View):
             return render(request, "add_student.html", {"form": form})
 
 
+"""AddBoxingView - is a view that show page after student successful signed up to a boxing class, it also have button to
+ return to mainpage """
+
+
 class AddStudentSuccessView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "add_student_success2.html")
